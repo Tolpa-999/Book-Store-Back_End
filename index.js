@@ -2,25 +2,31 @@
 
 const express = require("express");
 const app = express();
-const dotenv = require("dotenv").config()
+
+require("dotenv").config()
 const cors = require("cors");
 const userRoute = require("./routes/user.routes");
 const booksRoute = require("./routes/book.routes");
-const {  mongoose } = require("mongoose");
+const { mongoose } = require("mongoose");
+
+const cookieParser = require('cookie-parser');
+
+
 
 
 mongoose.connect(process.env.DBURL)
-    .then(()=> console.log("DB Conected")
-    ).catch((err)=>console.error(err))
+    .then(() => console.log("DB Conected")
+    ).catch((err) => console.error(err))
 
 app.use(express.json())
+app.use(cookieParser())
 app.use(cors());
 
-app.use( '/users' ,userRoute )
+app.use('/users', userRoute)
 
-app.use( '/books' ,booksRoute )
+app.use('/books', booksRoute)
 
-app.use(( err ,req ,res, next) => {
+app.use((err, req, res, next) => {
     res.json(err)
 })
 
@@ -30,6 +36,8 @@ app.use(( err ,req ,res, next) => {
 
 
 
-app.listen( process.env.PORT , ()=>{
-    console.log(" listing On Port : ", process.env.PORT )
-} )
+app.listen(process.env.PORT, () => {
+    console.log(" listing On Port : ", process.env.PORT)
+})
+
+module.exports = app;
