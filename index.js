@@ -11,7 +11,12 @@ const { mongoose } = require("mongoose");
 
 const cookieParser = require('cookie-parser');
 
+const connectDB = require('./config/db'); // Adjust path as necessary
 
+app.use(async (req, res, next) => {
+    await connectDB();
+    next();
+});
 
 
 mongoose.connect(process.env.DBURL)
@@ -40,4 +45,4 @@ app.listen(process.env.PORT, () => {
     console.log(" listing On Port : ", process.env.PORT)
 })
 
-module.exports = app;
+module.exports = app;  // Export the app for Vercel
